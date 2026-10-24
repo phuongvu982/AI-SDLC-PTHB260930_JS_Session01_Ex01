@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hệ Thống Đánh Giá & Xếp Loại Điểm - Rikkei Learn</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --border: #334155;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --success: #10b981;
+      --danger: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 680px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
+      background: rgba(37, 99, 235, 0.2);
+      color: #60a5fa;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: #e2e8f0;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #0f172a;
+      color: #ffffff;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus {
+      border-color: var(--primary);
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 8px;
+      border: none;
+      background: var(--primary);
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background-color 0.2s, transform 0.1s;
+    }
+
+    .btn:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn:active {
+      transform: scale(0.99);
+    }
+
+    .result-box {
+      margin-top: 24px;
+      padding: 20px;
+      border-radius: 10px;
+      display: none;
+      border: 1px solid transparent;
+    }
+
+    .result-box.success {
+      display: block;
+      background: rgba(16, 185, 129, 0.12);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .result-box.error {
+      display: block;
+      background: rgba(239, 68, 68, 0.12);
+      border-color: rgba(239, 68, 68, 0.3);
+    }
+
+    .result-title {
+      font-weight: 700;
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .result-box.success .result-title {
+      color: #34d399;
+    }
+
+    .result-box.error .result-title {
+      color: #f87171;
+    }
+
+    .result-content {
+      font-size: 14px;
+      color: #e2e8f0;
+      line-height: 1.6;
+    }
+
+    .cert-status {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .cert-eligible {
+      background: rgba(16, 185, 129, 0.2);
+      color: #34d399;
+    }
+
+    .cert-ineligible {
+      background: rgba(239, 68, 68, 0.2);
+      color: #f87171;
+    }
+
+    .nav-links {
+      margin-top: 24px;
+      text-align: center;
+    }
+
+    .nav-links a {
+      color: #60a5fa;
+      text-decoration: none;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <span class="badge">Rikkei Learn • Grading Portal</span>
+      <h1>Hệ Thống Tính Điểm & Xét Cấp Chứng Chỉ</h1>
+      <p class="subtitle">Đã áp dụng các hàm xử lý dữ liệu nhập chuẩn từ <code>script.js</code></p>
+    </div>
+
+    <div class="card">
+      <form id="score-form">
+        <div class="form-group">
+          <label for="name">Họ và tên học viên</label>
+          <input type="text" id="name" placeholder="Ví dụ:   nguyễn văn an  " required>
+        </div>
+
+        <div class="row">
+          <div class="form-group">
+            <label for="quiz">Điểm bài kiểm tra (0 - 10)</label>
+            <input type="text" id="quiz" placeholder="Ví dụ: 8.5" required>
+          </div>
+          <div class="form-group">
+            <label for="exam">Điểm bài thi (0 - 10)</label>
+            <input type="text" id="exam" placeholder="Ví dụ: 9" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="progress">Tiến độ hoàn thành (%)</label>
+          <input type="text" id="progress" placeholder="Ví dụ: 85 (cần >= 80% để nhận chứng chỉ)" required>
+        </div>
+
+        <button type="submit" class="btn" id="btn-calc">Tính Điểm & Xét Chứng Chỉ</button>
+      </form>
+
+      <div id="result-box" class="result-box">
+        <div id="result-title" class="result-title"></div>
+        <div id="result-content" class="result-content"></div>
+      </div>
+    </div>
+
+    <div class="nav-links">
+      <a href="tests.html">👉 Xem báo cáo kiểm thử tự động (tests.html - 10/10 test đạt)</a>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    const form = document.getElementById("score-form");
+    const resultBox = document.getElementById("result-box");
+    const resultTitle = document.getElementById("result-title");
+    const resultContent = document.getElementById("result-content");
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const rawName = document.getElementById("name").value;
+      const quizText = document.getElementById("quiz").value;
+      const examText = document.getElementById("exam").value;
+      const progressText = document.getElementById("progress").value;
+
+      // Kiểm tra tính hợp lệ của điểm bài kiểm tra
+      if (!isValidScore(quizText)) {
+        resultBox.className = "result-box error";
+        resultTitle.textContent = "Điểm bài kiểm tra không hợp lệ";
+        resultContent.textContent = "Điểm phải là số thực từ 0 đến 10, không chứa chữ ('9 điểm') và không dùng dấu phẩy ('8,5').";
+        return;
+      }
+
+      // Kiểm tra tính hợp lệ của điểm bài thi
+      if (!isValidScore(examText)) {
+        resultBox.className = "result-box error";
+        resultTitle.textContent = "Điểm bài thi không hợp lệ";
+        resultContent.textContent = "Điểm phải là số thực từ 0 đến 10, không chứa chữ ('9 điểm') và không dùng dấu phẩy ('8,5').";
+        return;
+      }
+
+      // Tính điểm trung bình và kiểm tra điều kiện chứng chỉ
+      const average = calcAverage(quizText, examText);
+      const isEligible = canGetCertificate(progressText, average);
+      const scoreMessage = buildScoreMessage(rawName, average);
+
+      resultBox.className = "result-box success";
+      resultTitle.textContent = "Kết Quả Xử Lý Thành Công";
+      resultContent.innerHTML = `
+        <p><strong>Thông báo:</strong> ${scoreMessage}</p>
+        <p><strong>Điểm kiểm tra:</strong> ${Number(quizText)} | <strong>Điểm thi:</strong> ${Number(examText)}</p>
+        <p><strong>Điểm trung bình:</strong> ${average}</p>
+        <p><strong>Tiến độ học tập:</strong> ${progressText}%</p>
+        <div class="cert-status ${isEligible ? 'cert-eligible' : 'cert-ineligible'}">
+          ${isEligible ? '✓ Đủ điều kiện cấp chứng chỉ' : '✗ Chưa đủ điều kiện cấp chứng chỉ (Yêu cầu tiến độ >= 80% và Điểm TB >= 5)'}
+        </div>
+      `;
+    });
+  </script>
+</body>
+</html>
